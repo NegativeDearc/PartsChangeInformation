@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Parts Change Information</title>
+    <link rel="stylesheet" href="static/bootstrap.min.css"/>
+    <script src="static/jquery-2.1.3.min.js"></script>
+    <script src="static/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="page-header">
+    <h1>Parts Change Summary <small>A flask website</small></h1>
+</div>
+
+<div class="navigation" id="nav">
+   <ul class="nav nav-pills">
+    <li role="presentation"><a href="#DayShift" data-toggle="tab">DayShift <span class="label label-important">NEW</span></a></li>
+    <li role="presentation"><a href="#NightShift" data-toggle="tab">NightShift</a></li>
+    <li role="presentation" class="active"><a href="#About" data-toggle="tab">About</a></li>
+</ul>
+</div>
+
+<!--tab panes-->
+<div id="navContent" class="tab-content">
+    <div role="tabpanel" id="About" class="tab-pane fade in active"><p>totally blank</p></div>
+    <div role="tabpanel" id="NightShift" class="tab-pane fade"><p>under developing</p></div>
+    <div role="tabpanel" id="DayShift" class="tab-pane fade">{{ schedule|safe }}</div>
+</div>
+
+<!--footer-->
+<hr>
+<footer class="bottom">
+    <div class="container">
+        <p>Copyright &copy; 技术部：Sheldon Chen</p>
+    </div>
+</footer>
+
+</body>
+</html>
