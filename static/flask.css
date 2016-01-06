@@ -1,0 +1,32 @@
+h1 {
+    color:blueviolet;
+    font-family: 'Consolas', 'Monaco', 'Bitstream Vera Sans Mono', monospace;
+    padding-left: 1.5%;
+}
+
+li {
+    color:orangered;
+    font-weight: 150%;
+    font-size: 16px;
+    font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    padding-left: 1%;
+}
+
+h3,h4{
+    color:blueviolet;
+    font-family: 'Consolas', 'Monaco', 'Bitstream Vera Sans Mono', monospace;
+    padding-left: 1.5%;
+}
+a.dt-button.dt-button{
+}
+
+.col-md-12{
+    padding-left: 2.5%;
+    color: #999999;
+}
+
+.col-md-10{
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 10px;
+}

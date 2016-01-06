@@ -37,5 +37,5 @@ def db_to_dat():
     pd.read_sql("SELECT * FROM tb1",conn).to_pickle('c:/users/sxchen/desktop/PartsChangeInformation/static/data.dat')
 
 if __name__ == '__main__':
-    add_data(7623)
+    add_data(7626)
     db_to_dat()
