@@ -6,7 +6,7 @@ import pandas as pd
 from itertools import chain
 
 def get_schedule():
-	path = u'P:/Production/Schedule_Data/Sharepoint/生管/计划日报表/16年计划日报表汇总/TBM/TBM plan/TBM Daily Report-2016(Jan).xlsx'
+	path = u'/\\ksa008/shared/Production/Schedule_Data/Sharepoint/生管/计划日报表/16年计划日报表汇总/TBM/TBM plan/TBM Daily Report-2016(Jan).xlsx'
 	try:
 		book = xlrd.open_workbook(path,on_demand = True)
 	except IOError:

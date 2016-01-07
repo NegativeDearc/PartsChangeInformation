@@ -8,8 +8,8 @@ app = Flask(__name__)
 def index():
     df,df0 = get_schedule()
     return render_template('index.html',
-                           day = df.to_html(classes = "table table-hover table-striped table-condensed table-responsive"),
-                           night = df0.to_html(classes = "table table-hover table-striped table-condensed table-responsive"))
+                           day = df.to_html(classes = "table table-hover table-striped table-condensed table-responsive dayshift"),
+                           night = df0.to_html(classes = "table table-hover table-striped table-condensed table-responsive nightshift"))
 
 @app.route('/api/<int:SPEC>')
 def api(SPEC):
@@ -24,4 +24,4 @@ if __name__ == '__main__':
     # http_server = HTTPServer(WSGIContainer(app))
     # http_server.listen(5000)
     # IOLoop.instance().start()
-    app.run(host = '0.0.0.0',debug = True,threaded = True)
+    app.run(host = '0.0.0.0',threaded = True)

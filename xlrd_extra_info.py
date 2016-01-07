@@ -6,9 +6,9 @@ import os
 def extra_info(vmi_spec):
 	vmi_spec = str(vmi_spec)
 
-	product_spec_path = u'P:/Technical/Building_Specs/CKT_green_tire_spec/Green_tire_specs/'
-	test_spec_path = u'P:/Technical/Building_Specs/CKT_green_tire_spec/Green_tire_specs/试制准备/'
-	project_spec_path = u'P:/Technical/Building_Specs/CKT_green_tire_spec/Green_tire_specs/试制准备/项目基准/'
+	product_spec_path = u'/\\ksa008/shared/Technical/Building_Specs/CKT_green_tire_spec/Green_tire_specs/'
+	test_spec_path = u'/\\ksa008/shared/Technical/Building_Specs/CKT_green_tire_spec/Green_tire_specs/试制准备/'
+	project_spec_path = u'/\\ksa008/shared/Technical/Building_Specs/CKT_green_tire_spec/Green_tire_specs/试制准备/项目基准/'
 
 	product_spec_lst = os.listdir(product_spec_path)
 	test_spec_lst = os.listdir(test_spec_path)

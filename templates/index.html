@@ -15,13 +15,34 @@
     <script src="static/buttons.print.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('table.dataframe').DataTable({
+            $('table.dayshift').DataTable({
                 dom:'Bftrip',
                 lengthMenu:[[25,-1],['show 25','show all']],
                 buttons:[{
                     extend:'print',
                     text:'PRINT',
-                    message:'copyright@technical 2015-2016',
+                    message:'copyright@technical 2015-2016 你正在打印的是白班信息',
+                    autoPrint:true,
+                    customize:function(win){
+                        $(win.document.body)
+                                .css('font-size','12pt');
+                        $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size','inherit');
+                    }
+                }, {
+                    extend:'pageLength',
+                    text:'SHOW ROWS'
+                }]
+            });
+
+            $('table.nightshift').DataTable({
+                dom:'Bftrip',
+                lengthMenu:[[25,-1],['show 25','show all']],
+                buttons:[{
+                    extend:'print',
+                    text:'PRINT',
+                    message:'copyright@technical 2015-2016 你正在打印的是夜班信息',
                     autoPrint:true,
                     customize:function(win){
                         $(win.document.body)
@@ -53,11 +74,11 @@
 
 <!--tab panes-->
 <div id="navContent" class="tab-content">
-    <div role="tabpanel" id="NightShift" class="tab-pane fade in active">
-        <div class="col-md-10 col-md-offset-1">{{ night|safe }}</div>
-    </div>
-    <div role="tabpanel" id="DayShift" class="tab-pane fade in">
+    <div role="tabpanel" id="DayShift" class="tab-pane fade in active">
         <div class="col-md-10 col-md-offset-1">{{ day|safe }}</div>
+    </div>
+    <div role="tabpanel" id="NightShift" class="tab-pane fade in">
+        <div class="col-md-10 col-md-offset-1">{{ night|safe }}</div>
     </div>
     <div role="tabpanel" id="About" class="tab-pane fade in ">
         <h3>Hi there:</h3>
