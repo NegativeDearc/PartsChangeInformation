@@ -6,10 +6,13 @@ import pandas as pd
 from xlrd_extra_info import extra_info
 
 def add_data(SPEC):
+    if len(str(SPEC)) != 4:
+        return 'SPEC LENGTH ERROR, PLEASE CHECK'
+
     conn = sqlite3.Connection('c:/users/sxchen/desktop/PartsChangeInformation/main.db')
     cur = conn.cursor()
 
-    '''COUNT could find records of database,but the row [SPEC,0,0,0,0,0,0,0,0] also need to handle'''
+    #COUNT could find records of database,but the row [SPEC,0,0,0,0,0,0,0,0] also need to handle
     sql3 = "SELECT COUNT(*) FROM tb1 WHERE SPEC = %s" % SPEC
     num, = cur.execute(sql3).fetchall()[0]
     if num > 0:
