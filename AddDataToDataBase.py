@@ -13,9 +13,13 @@ def add_data(SPEC):
     cur = conn.cursor()
 
     #COUNT could find records of database,but the row [SPEC,0,0,0,0,0,0,0,0] also need to handle
+    sql = "SELECT * FROM tb1 WHERE SPEC = '%s'" % SPEC
+    sql2 = "SELECT COUNT(*) FROM tb1"
     sql3 = "SELECT COUNT(*) FROM tb1 WHERE SPEC = %s" % SPEC
+
     num, = cur.execute(sql3).fetchall()[0]
     if num > 0:
+        print SPEC,'ALREADY EXISTED',cur.execute(sql).fetchall()
         return SPEC,'ALREADY EXISTED'
 
     lst = []
@@ -24,9 +28,6 @@ def add_data(SPEC):
 
     df = pd.DataFrame(lst,columns = ['SPEC',u'DIM',u'CENTER_DECK',u'PUSHOVER_CAN',u'SIDE_RING',u'BT_ADD',u'TRANSFER_RING',u'BO_PUSH_CAN'])
     df.to_sql('tb1',conn,'sqlite',if_exists = 'append',index = False)
-
-    sql = "SELECT * FROM tb1 WHERE SPEC = '%s'" % SPEC
-    sql2 = "SELECT COUNT(*) FROM tb1"
 
     print cur.execute(sql).fetchall()
     print cur.execute(sql2).fetchall()
@@ -39,6 +40,3 @@ def db_to_dat():
     conn = sqlite3.Connection('c:/users/sxchen/desktop/PartsChangeInformation/main.db')
     pd.read_sql("SELECT * FROM tb1",conn).to_pickle('c:/users/sxchen/desktop/PartsChangeInformation/static/data.dat')
 
-if __name__ == '__main__':
-    add_data(7626)
-    db_to_dat()

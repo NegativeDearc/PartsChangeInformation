@@ -1,33 +1,52 @@
-from flask import Flask,render_template,request,redirect,url_for
-from flask.ext.cache import Cache
+from flask import Flask,render_template,request,redirect,url_for,session,abort
 from xlrd_extra_info import extra_info
 from get_schedule import get_schedule
 from AddDataToDataBase import add_data,db_to_dat
+from os import urandom
 
 app = Flask(__name__)
-cache = Cache(app,config={'CACHE_TYPE': 'simple'})
+app.secret_key = 'UITJMNAGNAUIGKL'
 
+@app.before_request
+def csrf_protect():
+    if request.method == 'POST':
+        token = session.pop('_csrf_token',None)
+        if not token or token != request.form.get('_csrf_token'):
+            abort(403)
+
+def generate_csrf_token():
+    if '_csrf_token' not in session:
+        session['_csrf_token'] = urandom(15).encode('hex')
+    return session['_csrf_token']
+
+app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
 @app.route('/',methods = ['GET','POST'])
-@cache.cached(timeout = 100)
 def index():
     df,df0 = get_schedule()
+    day = df.to_html(classes = "table table-hover table-striped table-condensed table-responsive dayshift")
+    night = df0.to_html(classes = "table table-hover table-striped table-condensed table-responsive nightshift")
     #request.form get values from HTML attribute 'name',then compare value with attr 'value'
     if request.form.get('go') == 'go':
         if request.form.get('spec') is not None:
-            spec = request.form.get('spec')
-            add_data(spec)
+            session['spec'] = request.form.get('spec')
+            add_data(session.get('spec'))
             db_to_dat()
-            redirect(url_for('index'))
-
-    return render_template('index.html',
-                           day = df.to_html(classes = "table table-hover table-striped table-condensed table-responsive dayshift"),
-                           night = df0.to_html(classes = "table table-hover table-striped table-condensed table-responsive nightshift"))
+            return redirect(url_for('index'))
+    return render_template('index.html',day = day,night = night)
 
 @app.route('/api/<int:SPEC>')
 def api(SPEC):
     data = extra_info(SPEC)
     return render_template('api.html',data = data)
+
+# @app.errorhandler(404)
+# def page_not_found(e):
+#     return render_template('404.html'),404
+#
+# @app.errorhandler(500)
+# def internal_server_error(e):
+#     return render_template('500.html'),500
 
 if __name__ == '__main__':
     # from tornado.wsgi import WSGIContainer
@@ -37,4 +56,4 @@ if __name__ == '__main__':
     # http_server = HTTPServer(WSGIContainer(app))
     # http_server.listen(5000)
     # IOLoop.instance().start()
-    app.run(debug = True,threaded = True)
+    app.run(debug = True, threaded = True)

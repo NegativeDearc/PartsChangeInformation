@@ -8,56 +8,12 @@
     <link rel="stylesheet" href="static/dataTables.bootstrap.min.css"/>
     <link rel="stylesheet" href="static/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="static/buttons.dataTables.min.css"/>
+    <link rel="shortcut icon" href="{{ url_for('static',filename = 'favicon.ico') }}">
     <script src="static/jquery-2.1.3.min.js"></script>
     <script src="static/jquery.dataTables.js"></script>
     <script src="static/dataTables.buttons.min.js"></script>
     <script src="static/bootstrap.min.js"></script>
     <script src="static/buttons.print.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('table.dayshift').DataTable({
-                dom:'Bftrip',
-                lengthMenu:[[25,-1],['25行','全部']],
-                buttons:[{
-                    extend:'print',
-                    text:'打印',
-                    message:'copyright@technical 2015-2016 你正在打印的是白班信息，版权属于CKT技术部' + Date(),
-                    autoPrint:true,
-                    customize:function(win){
-                        $(win.document.body)
-                                .css('font-size','12pt');
-                        $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size','inherit');
-                    }
-                }, {
-                    extend:'pageLength',
-                    text:'显示'
-                }]
-            });
-
-            $('table.nightshift').DataTable({
-                dom:'Bftrip',
-                lengthMenu:[[25,-1],['25行','全部']],
-                buttons:[{
-                    extend:'print',
-                    text:'打印',
-                    message:'copyright@technical 2015-2016 你正在打印的是夜班信息，版权属于CKT技术部' + Date(),
-                    autoPrint:true,
-                    customize:function(win){
-                        $(win.document.body)
-                                .css('font-size','12pt');
-                        $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size','inherit');
-                    }
-                }, {
-                    extend:'pageLength',
-                    text:'显示'
-                }]
-            });
-        });
-    </script>
 </head>
 
 <div class="page-header">
@@ -89,9 +45,11 @@
     </div>
     <div role="tabpanel" id="Maintain" class="tab-pane fade in">
         <div>
+            <h4>Welcome the vistor from {{ request.remote_addr }}.</h4>
             <h4>ADD SPEC TO DATABASE,PRESS <span style="color: red">GO!</span> BUTTON</h4>
         </div>
         <form action="" method="post" class="form" role="form">
+            <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
             <input required maxlength="4" type="text" class="form-control" placeholder="ADD SPEC" name="spec" value="">
             <button type="submit" class="btn btn-default" id="go" value="go" name="go"><span style="color:red">Go!</span></button>
         </form>
@@ -105,5 +63,58 @@
         <div class="col-md-12">Copyright &copy;2015-2016 Technical:Sheldon Chen</div>
     </div>
 </footer>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('table.dayshift').DataTable({
+                dom:'Bftrip',
+                lengthMenu:[[25,-1],['25行','全部']],
+                buttons:[{
+                    extend:'print',
+                    text:'打印',
+                    message:'copyright@technical 2015-2016 你正在打印的是白班信息，版权属于CKT技术部' + new Date(),
+                    autoPrint:true,
+                    customize:function(win){
+                        $(win.document.body)
+                                .css('font-size','12pt');
+                        $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size','inherit')
+                                .css('border-width','1px 0px 0px 1px');
+                        $(win.document.body).find('td')
+                                .css('border','solid')
+                                .css('border-width','0px 1px 1px 0px');
+                    }
+                }, {
+                    extend:'pageLength',
+                    text:'显示'
+                }]
+            });
+
+            $('table.nightshift').DataTable({
+                dom:'Bftrip',
+                lengthMenu:[[25,-1],['25行','全部']],
+                buttons:[{
+                    extend:'print',
+                    text:'打印',
+                    message:'copyright@technical 2015-2016 你正在打印的是夜班信息，版权属于CKT技术部' + new Date(),
+                    autoPrint:true,
+                    customize:function(win){
+                        $(win.document.body)
+                                .css('font-size','12pt');
+                        $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size','inherit')
+                                .css('border-width','1px 0px 0px 1px');
+                        $(win.document.body).find('td')
+                                .css('border','solid')
+                                .css('border-width','0px 1px 1px 0px');
+                    }
+                }, {
+                    extend:'pageLength',
+                    text:'显示'
+                }]
+            });
+        });
+    </script>
 </body>
 </html>
