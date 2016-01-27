@@ -2,6 +2,8 @@
 
 import xlrd
 import datetime
+import os
+import re
 import pandas as pd
 from itertools import chain
 
@@ -19,7 +21,54 @@ def get_schedule():
 			   ['DRA' + str(y) for y in sorted(6 * range(1,8))]	,
 			   ['VMI ' + str(z) for z in sorted(5 * range(1,12))]]))
 
-	path = u'/\\ksa008/shared/Production/Schedule_Data/Sharepoint/生管/计划日报表/16年计划日报表汇总/TBM/TBM plan/TBM Daily Report-2016(Jan).xlsx'
+	def re_find_file(debug = None):
+		'''
+		using regular expression to find the right file path this year(if exist)
+		when debug = True,program will test itself
+		'''
+		path = u'/\\ksa008/shared/Production/Schedule_Data/Sharepoint/生管/计划日报表/16年计划日报表汇总/TBM/TBM plan/'
+		file_list = os.listdir(path)
+
+		now_date = datetime.datetime.now()
+		month_abb = now_date.strftime('%b')
+	
+		def this_month_file(month_abb):
+			'''
+			according to the month find the file named by month.abb.
+			Return a list
+			'''
+			pattern = '^TBM.*' + month_abb + '.*xlsx$'
+			f = lambda x:re.findall(pattern,x,flags = re.IGNORECASE)
+			lst = map(f,file_list)
+			r = list(chain(*lst))
+			return r
+
+		result = this_month_file(month_abb = month_abb)
+
+		'''debug to test'''
+		DEBUG = debug
+		if DEBUG == True:
+			result = []
+
+		if len(result) == 0:
+			'''if can't find any file match,go back to 28days ago,try it again'''
+			delta = datetime.timedelta(days = 28)
+			month_abb_28d_ago = (now_date - delta).strftime('%b')
+			res = this_month_file(month_abb = month_abb_28d_ago)
+			if len(res) == 0:
+				return "Can't find any file matched"
+			else:
+				res = res[0]
+		if len(result) > 1:
+			'''if find more than one,choose the first one'''
+			res = result[0]
+		else:
+			res = result[0]
+
+		return path + res
+
+	#the file path
+	path = re_find_file()
 
 	#database
 	df3 = pd.read_pickle('c:/users/sxchen/desktop/PartsChangeInformation/static/data.dat')
@@ -54,26 +103,15 @@ def get_schedule():
 	except Exception:
 		return 'No Sheet Name! %s' % sheet
 	else:
-		for row in row_range:
-			if sheet.cell_value(row,2) == '':
-				day_spec.append(0)
-			elif str(int(sheet.cell_value(row,2))).startswith('99'):
-				#str make sure pd.DataFrame will convert it to Python Object[string] or pd.merge will fail.
-				day_spec.append(str(int(sheet.cell_value(row,2)))[2:])
-			else:
-				day_spec.append(str(int(sheet.cell_value(row,2))))
-
-		for row in row_range:
-			if sheet.cell_value(row,3) == '':
-				day_num.append(None)
-			else:
-				day_num.append(sheet.cell_value(row,3))
+		#day_spec
+		day_spec = map(data_clean,[sheet.cell_value(row,2) for row in row_range])
+		day_num = map(data_clean,[sheet.cell_value(row,3) for row in row_range])
 
 		#night_spec
 		night_spec = map(data_clean,[sheet.cell_value(row,8) for row in row_range])
 		night_num =  map(data_clean,[sheet.cell_value(row,9) for row in row_range])
 
-		#dayshfit
+		#dayshift
 		df = pd.DataFrame({
 			'Type':['白' for x in range(145)],
 			'Machine':machine,
@@ -133,4 +171,5 @@ def get_schedule():
 
 	d = pd.merge(pd.concat([df2,today_day_df_first],keys=['day','night_first']),df3,'left',on = 'SPEC')
 	n = pd.merge(pd.concat([df4,next_day_df3],keys=['night','next_day_first']),df3,'left',on = 'SPEC')
+	
 	return d,n

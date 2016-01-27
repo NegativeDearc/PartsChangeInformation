@@ -21,6 +21,7 @@ def generate_csrf_token():
 
 app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
+@app.route('/index',methods = ['GET','POST'])
 @app.route('/',methods = ['GET','POST'])
 def index():
     df,df0 = get_schedule()
@@ -52,8 +53,8 @@ if __name__ == '__main__':
     # from tornado.wsgi import WSGIContainer
     # from tornado.httpserver import HTTPServer
     # from tornado.ioloop import IOLoop
-
+    #
     # http_server = HTTPServer(WSGIContainer(app))
     # http_server.listen(5000)
     # IOLoop.instance().start()
-    app.run(debug = True, threaded = True)
+    app.run(debug = True)
