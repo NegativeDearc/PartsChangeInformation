@@ -37,7 +37,7 @@ def get_schedule():
 			according to the month find the file named by month.abb.
 			Return a list
 			'''
-			pattern = '^TBM.*' + month_abb + '.*xlsx$'
+			pattern = '^[TBM|COPY].*' + month_abb + '.*xlsx$'
 			f = lambda x:re.findall(pattern,x,flags = re.IGNORECASE)
 			lst = map(f,file_list)
 			r = list(chain(*lst))
@@ -59,12 +59,9 @@ def get_schedule():
 				return "Can't find any file matched"
 			else:
 				res = res[0]
-		if len(result) > 1:
+		if len(result) >= 1:
 			'''if find more than one,choose the first one'''
 			res = result[0]
-		else:
-			res = result[0]
-
 		return path + res
 
 	#the file path
