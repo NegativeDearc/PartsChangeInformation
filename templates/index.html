@@ -16,14 +16,16 @@
     <script src="static/buttons.print.min.js"></script>
 </head>
 
-<div class="page-header">
-    <h1>Parts Change Summary换模备件信息清单 <small>A flask website</small></h1>
+<div class="container-fluid">
+    <div class="page-header">
+        <h1>Parts Change Summary换模备件信息清单 <small>{{ time }}</small></h1>
+    </div>
 </div>
 
 <body>
-<div class="navigation" id="nav">
-   <ul class="nav nav-pills">
-    <li role="presentation" class="active"><a href="#DayShift" data-toggle="tab">DayShift白班 <span class="label label-important">NEW</span></a></li>
+<div class="container-fluid navigation" id="nav">
+   <ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="#DayShift" data-toggle="tab">DayShift白班</a></li>
     <li role="presentation"><a href="#NightShift" data-toggle="tab">NightShift夜班</a></li>
     <li role="presentation"><a href="#About" data-toggle="tab">About关于本站</a></li>
     <li role="presentation"><a href="#Maintain" data-toggle="tab">Maintain数据库维护</a></li>
@@ -33,21 +35,43 @@
 <!--tab panes-->
 <div id="navContent" class="tab-content">
     <div role="tabpanel" id="DayShift" class="tab-pane fade in active">
-        <div class="col-md-10 col-md-offset-1">{{ day|safe }}</div>
+        <div class="container-fluid">
+            <div>
+                {{ day|safe }}
+            </div>
+            <hr>
+        </div>
     </div>
     <div role="tabpanel" id="NightShift" class="tab-pane fade in">
-        <div class="col-md-10 col-md-offset-1">{{ night|safe }}</div>
+        <div class="container-fluid">
+            <div>
+                <div>{{ night|safe }}</div>
+            </div>
+            <hr>
+        </div>
+
     </div>
     <div role="tabpanel" id="About" class="tab-pane fade in">
-        <h3>Hi there:</h3>
-        <h4>Enjoy using it. Have any questions?<a href="&#x6d;ai&#108;&#116;&#111;&#58;&#x73;&#x78;&#x63;&#104;&#x65;&#110;&#64;&#x63;&#x6f;&#111;&#x70;&#101;&#114;t&#x69;&#x72;e&#46;&#99;&#x6f;&#109;">&#x4d;&#97;&#x69;&#108;&#32;t&#x6f;&#x20;&#109;&#101;</a></h4>
-        <h4>This website under development with <code>Flask</code> web framework. Below is the library list.All source code opened at <a href="https://github.com/NegativeDearc/PartsChangeInformation" target="_blank">Github</a>:</h4>
-        <h4>A Restful API is still developing.</h4>
+        <h3>您好：</h3>
+        <h4>使用当中遇到问题？</h4>
+        <h4>给我写邮件，<a href="&#x6d;ai&#108;&#116;&#111;&#58;&#x73;&#x78;&#x63;&#104;&#x65;&#110;&#64;&#x63;&#x6f;&#111;&#x70;&#101;&#114;t&#x69;&#x72;e&#46;&#99;&#x6f;&#109;">&#x4d;&#97;&#x69;&#108;&#32;t&#x6f;&#x20;&#109;&#101;</a></h4>
+        <h4>给我打电话，座机：6573</h4>
+        <h4>网站使用Python开发，若您感兴趣，可以索取源代码。</h4>
+        <h4>网站API仍在开发，以供未来智能生产调度使用。</h4>
     </div>
     <div role="tabpanel" id="Maintain" class="tab-pane fade in">
         <div>
-            <h4>Welcome the vistor from {{ request.remote_addr }}.</h4>
-            <h4>ADD SPEC TO DATABASE,PRESS <span style="color: red">GO!</span> BUTTON</h4>
+            <h4>欢迎您，你的IP地址是：{{ request.remote_addr }}。</h4>
+            <h4>添加规格信息非常简单！点击按钮<span style="color: red">GO!</span>即可使用</h4>
+            <h4>
+                <p>小小提示</p>
+                <ul>
+                    <li>1.规格号为4位，带99的则去掉99</li>
+                    <li>2.程序会自动添加VMI以及MAXX的信息</li>
+                    <li>3.假如遭遇网站INTERNAL SERVER ERROR，代表程序崩溃，请联系修复</li>
+                </ul>
+            </h4>
+            <h4>------------------</h4>
         </div>
         <form action="" method="post" class="form" role="form">
             <input name="_csrf_token" type="hidden" value="{{ csrf_token() }}">
@@ -58,10 +82,9 @@
 </div>
 
 <!--footer-->
-<hr>
-<footer class="bottom">
-    <div class="divided content row">
-        <div class="col-md-12">Copyright &copy;2015-2016 Technical:Sheldon Chen</div>
+<footer class="container-fluid">
+    <div>
+        <div style="color:grey">&copy;2015-2016 Sheldon Chen</div>
     </div>
 </footer>
     <script type="text/javascript">

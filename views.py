@@ -1,8 +1,10 @@
 from flask import Flask,render_template,request,redirect,url_for,session,abort
 from xlrd_extra_info import extra_info
 from get_schedule import get_schedule
-from AddDataToDataBase import add_data,db_to_dat
+from AddDataToDataBase import add_data_VMI,db_to_dat,add_data_MAXX
 from os import urandom
+import datetime
+import pytz
 
 app = Flask(__name__)
 app.secret_key = 'UITJMNAGNAUIGKL'
@@ -21,20 +23,29 @@ def generate_csrf_token():
 
 app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
+@app.before_request
+def conn_db():
+    pass
+
 @app.route('/index',methods = ['GET','POST'])
 @app.route('/',methods = ['GET','POST'])
 def index():
     df,df0 = get_schedule()
-    day = df.to_html(classes = "table table-hover table-striped table-condensed table-responsive dayshift")
-    night = df0.to_html(classes = "table table-hover table-striped table-condensed table-responsive nightshift")
+    day = df.to_html(classes = "dayshift table-hover")
+    night = df0.to_html(classes = "nightshift table-hover")
+    
+    tz = pytz.timezone('Asia/Shanghai')
+    time = format(datetime.datetime.now(tz),'')
+
     #request.form get values from HTML attribute 'name',then compare value with attr 'value'
     if request.form.get('go') == 'go':
         if request.form.get('spec') is not None:
             session['spec'] = request.form.get('spec')
-            add_data(session.get('spec'))
+            add_data_VMI(session.get('spec'))
+            add_data_MAXX(session.get('spec'))
             db_to_dat()
             return redirect(url_for('index'))
-    return render_template('index.html',day = day,night = night)
+    return render_template('index.html',day = day,night = night,time = time)
 
 @app.route('/api/<int:SPEC>')
 def api(SPEC):
@@ -57,4 +68,4 @@ if __name__ == '__main__':
     # http_server = HTTPServer(WSGIContainer(app))
     # http_server.listen(5000)
     # IOLoop.instance().start()
-    app.run(host = '0.0.0.0',threaded = True)
+    app.run(threaded = True,host='0.0.0.0')
