@@ -163,7 +163,7 @@ def get_schedule():
         sheet2 = book.sheet_by_name(next_day_sheet)
     except Exception:
         #make a fake empty DataFrame to concat
-        next_day_df3 = pd.DataFrame({}, columns = ['Type','Machine','SPEC','NUM'])
+        next_day_df3 = pd.DataFrame({}, columns = ['Type','Machine','SPEC','NUM','MACHINE_TYPE'])
     else:
         #读取第二天的白班第一进度
         next_day_spec = map(data_clean,[sheet2.cell_value(row,2) for row in row_range])
