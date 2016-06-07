@@ -31,12 +31,12 @@ def conn_db():
 @app.route('/',methods = ['GET','POST'])
 def index():
     df,df0 = get_schedule()
+    print df,df0
+    print df.SPEC
     day = df.to_html(classes = "dayshift table-hover")
     night = df0.to_html(classes = "nightshift table-hover")
-    
     tz = pytz.timezone('Asia/Shanghai')
     time = format(datetime.datetime.now(tz),'')
-
     #request.form get values from HTML attribute 'name',then compare value with attr 'value'
     if request.form.get('go') == 'go':
         if request.form.get('spec') is not None:

@@ -48,9 +48,9 @@ def add_data_VMI(SPEC):
     else:
         cur.execute(sql4 % tuple(res))
 
-    cur.close()
+    #cur.close()
     conn.commit()
-    conn.close()
+    #conn.close()
 
 def add_data_MAXX(SPEC):
     if len(str(SPEC)) != 4:
@@ -95,14 +95,15 @@ def add_data_MAXX(SPEC):
     else:
         cur.execute(sql4 % tuple(res))
 
-    cur.close()
+    #cur.close()
     conn.commit()
-    conn.close()
+    #conn.close()
 
 def db_to_dat():
     conn = sqlite3.Connection('c:/users/sxchen/desktop/PartsChangeInformation/main.db')
     pd.read_sql("SELECT * FROM tb1",conn).to_pickle('c:/users/sxchen/desktop/PartsChangeInformation/static/data.dat')
 
 if __name__ == '__main__':
-    add_data_VMI(6990)
+    add_data_VMI(1544)
+    add_data_MAXX(1544)
     db_to_dat()

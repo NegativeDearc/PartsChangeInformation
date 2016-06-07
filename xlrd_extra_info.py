@@ -23,9 +23,11 @@ def extra_info(vmi_spec):
 	if len(spec_path) > 0:
 		book = xlrd.open_workbook(spec_path[0],on_demand = True)
 		sheet_names = book.sheet_names()
+		#print sheet_names
 
 		for x in sheet_names:
-			if 'CURRENT' == x.upper():
+			a = x.split(' ')[0]
+			if 'CURRENT' == a.upper():
 				sheet = book.sheet_by_name(x)
 				break
 			else:
@@ -57,7 +59,7 @@ def extra_info(vmi_spec):
 			if x.__class__ == unicode:
 				u = x.upper()
 				#trasfer rin,some people type transfer ring ,so 'SFER RING' is OK
-				for y in ['DRUM DIA','CENTER DECK','PUSHOVER CAN','SIDE RING','BT DRUM ADD','SFER RING','ALTERNATIVE PO CAN']:
+				for y in ['DRUM DIA','CENTER DECK','PUSHOVER','SIDE RING','BT DRUM ADD','SFER RING','ALTERNATIVE PO CAN']:
 					if y in u:
 						_index = p[0].index(x)
 						res.append(p[1][_index])
@@ -86,9 +88,11 @@ def extra_info_maxx(vmi_spec):
 	if len(spec_path) > 0:
 		book = xlrd.open_workbook(spec_path[0],on_demand = True)
 		sheet_names = book.sheet_names()
+		#print sheet_names
 
 		for x in sheet_names:
-			if 'CURRENT' == x.upper():
+			a = x.split(' ')[0]
+			if 'CURRENT' == a.upper():
 				sheet = book.sheet_by_name(x)
 				break
 			else:
@@ -115,7 +119,7 @@ def extra_info_maxx(vmi_spec):
 			if x.__class__ == unicode:
 				u = x.upper()
 				#trasfer rin,some people type transfer ring ,so 'SFER RING' is OK
-				for y in ['DRUM DIA','CENTER DECK','PUSHOVER CAN','SIDE RING','BT DRUM ADD','SFER RING','ALTERNATIVE PO CAN']:
+				for y in ['DRUM DIA','CENTER DECK','PUSHOVER','SIDE RING','BT DRUM ADD','SFER RING','ALTERNATIVE PO CAN']:
 					if y in u:
 						_index = p[0].index(x)
 						res.append(p[1][_index])
@@ -125,10 +129,5 @@ def extra_info_maxx(vmi_spec):
 		return [vmi_spec,'MAXX',0,0,0,0,0,0,0]
 
 if __name__ == '__main__':
-	x=extra_info(7607)
-	y=extra_info_maxx(7607)
-	print tuple(y)
-	print len(tuple(y))
-	#y=extra_info(6897)
+	x=extra_info(1126)
 	print x
-	print y

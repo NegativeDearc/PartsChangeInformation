@@ -27,7 +27,6 @@ def get_schedule():
               ['DRA' for y in sorted(6 * range(1,8))],
               ['VMI' for z in sorted(5 * range(1,12))],
               ['MAXX'for a in sorted(5 * range(1,4))]]))
-
     # ru times zone ,slow than china 5 hours
     tz = pytz.timezone('Asia/Shanghai')
     def re_find_file(debug = None):
@@ -131,7 +130,6 @@ def get_schedule():
             'NUM':day_num,
             'MACHINE_TYPE':machine_type
             },columns= ['Type','Machine','SPEC','NUM','MACHINE_TYPE'],dtype = 'O')
-
         #nightshift
         df1 = pd.DataFrame({
             'Type':['夜' for x in range(160)],
@@ -154,7 +152,7 @@ def get_schedule():
             lst2.append(g.ix[min(g.index),:]) #---> Series
 
         today_day_df_first = pd.DataFrame(lst2).sort_index()
-        print today_day_df_first
+        #print today_day_df_first
         len_today_day_df_first = len(today_day_df_first.index)
 
 
@@ -168,7 +166,6 @@ def get_schedule():
         #读取第二天的白班第一进度
         next_day_spec = map(data_clean,[sheet2.cell_value(row,2) for row in row_range])
         next_day_num = map(data_clean,[sheet2.cell_value(row,3) for row in row_range])
-        
         next_day_df = pd.DataFrame({
             'Type':['白' for x in range(160)],
             'Machine':machine,
